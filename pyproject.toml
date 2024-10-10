@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sre-log-analyzer"
+version = "1.0.0"
+description = "Automated SRE log analyzer and blameless post-mortem generator"
+readme = { file = "README.txt", content-type = "text/plain" }
+requires-python = ">=3.10"
+license = { text = "MIT" }
+keywords = ["sre", "incident-management", "log-analysis", "post-mortem", "root-cause-analysis"]
+classifiers = [
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: System :: Systems Administration",
+    "Topic :: System :: Logging",
+]
+
+[project.scripts]
+sre-analyze = "sre_analyzer.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

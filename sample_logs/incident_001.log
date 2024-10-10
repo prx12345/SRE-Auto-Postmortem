@@ -1,0 +1,57 @@
+2026-08-12 13:58:02,114 INFO [payments-api] Application healthy, worker pool size=8, uptime=6d4h
+2026-08-12 13:58:05,431 INFO [db-pool] Connection pool stats: in_use=4/32 idle=28 wait_p95=11ms
+10.0.1.21 - - [12/Aug/2026:13:58:11 +0000] "GET /api/v1/orders HTTP/1.1" 200 1832 "-" "python-requests/2.31"
+10.0.1.34 - - [12/Aug/2026:13:58:42 +0000] "POST /api/v1/payments HTTP/1.1" 201 412 "-" "okhttp/4.12.0"
+2026-08-12 13:59:30,020 INFO [payments-api] Processed 1,240 requests in last 60s, error_rate=0.0%
+10.0.1.21 - - [12/Aug/2026:14:00:15 +0000] "GET /api/v1/orders HTTP/1.1" 200 1810 "-" "python-requests/2.31"
+2026-08-12 14:00:31,555 INFO [db-pool] Connection pool stats: in_use=5/32 idle=27 wait_p95=12ms
+2026-08-12 14:01:44,209 INFO [payments-api] Scheduled job reconcile_ledger completed in 3.2s
+2026-08-12 14:02:47,902 WARNING [db-pool] Connection acquisition latency elevated: wait_p95=850ms (baseline 12ms)
+2026-08-12 14:02:59,411 WARNING [db-pool] Connection acquisition latency elevated: wait_p95=2100ms (baseline 12ms)
+2026-08-12 14:03:12,540 ERROR [db-pool] Failed to acquire connection: timed out after 5000ms (host=db-primary.internal:5432)
+2026-08-12 14:03:12,544 ERROR [payments-api] Unhandled exception while processing GET /api/v1/orders
+Traceback (most recent call last):
+  File "/app/payments/db.py", line 88, in acquire
+    conn = self._pool.getconn(timeout=5.0)
+  File "/usr/local/lib/python3.11/site-packages/psycopg2/pool.py", line 92, in getconn
+    raise PoolError("connection pool exhausted")
+psycopg2.OperationalError: connection to server at "db-primary.internal" (10.0.4.12), port 5432 failed: timeout expired
+2026-08-12 14:03:20,118 ERROR [db-pool] connection pool exhausted: 32/32 connections in use, 47 requests waiting
+2026-08-12 14:03:28,731 ERROR [db-pool] Failed to acquire connection: timed out after 5000ms (host=db-primary.internal:5432)
+2026-08-12 14:03:41,002 ERROR [payments-api] Database query aborted: connection to server at "db-primary.internal" (10.0.4.12), port 5432 failed: timeout expired
+2026-08-12 14:03:55,610 ERROR [db-pool] connection pool exhausted: 32/32 connections in use, 112 requests waiting
+2026-08-12 14:04:10,377 ERROR [payments-api] Health check /internal/ready degraded: database unreachable
+2026/08/12 14:04:31 [error] 412#412: *90211 upstream timed out (110: Connection timed out) while reading response header from upstream, client: 10.0.1.21, server: api.internal, request: "GET /api/v1/orders HTTP/1.1", upstream: "http://10.0.3.7:8000/api/v1/orders"
+2026/08/12 14:04:33 [error] 412#412: *90214 upstream timed out (110: Connection timed out) while reading response header from upstream, client: 10.0.1.34, server: api.internal, request: "POST /api/v1/payments HTTP/1.1", upstream: "http://10.0.3.8:8000/api/v1/payments"
+10.0.1.21 - - [12/Aug/2026:14:04:35 +0000] "GET /api/v1/orders HTTP/1.1" 502 157 "-" "python-requests/2.31"
+10.0.1.34 - - [12/Aug/2026:14:04:37 +0000] "POST /api/v1/payments HTTP/1.1" 502 157 "-" "okhttp/4.12.0"
+10.0.1.87 - - [12/Aug/2026:14:04:41 +0000] "GET /api/v1/orders/8811 HTTP/1.1" 502 157 "-" "Mozilla/5.0"
+2026-08-12 14:04:48,290 ERROR [db-pool] Failed to acquire connection: timed out after 5000ms (host=db-primary.internal:5432)
+10.0.1.21 - - [12/Aug/2026:14:04:52 +0000] "GET /api/v1/orders HTTP/1.1" 502 157 "-" "python-requests/2.31"
+10.0.1.90 - - [12/Aug/2026:14:04:58 +0000] "GET /api/v1/balance HTTP/1.1" 502 157 "-" "okhttp/4.12.0"
+W0812 14:05:10.221873       1 prober.go:107] Readiness probe failed: HTTP probe failed with statuscode: 503, pod: payments-api-6d8f9c7b4-x2lqk
+10.0.1.34 - - [12/Aug/2026:14:05:14 +0000] "POST /api/v1/payments HTTP/1.1" 502 157 "-" "okhttp/4.12.0"
+10.0.1.87 - - [12/Aug/2026:14:05:19 +0000] "GET /api/v1/orders/8811 HTTP/1.1" 502 157 "-" "Mozilla/5.0"
+2026/08/12 14:05:22 [error] 412#412: *90291 connect() failed (110: Connection timed out) while connecting to upstream, client: 10.0.1.90, server: api.internal, request: "GET /api/v1/balance HTTP/1.1", upstream: "http://10.0.3.7:8000/api/v1/balance"
+10.0.1.55 - - [12/Aug/2026:14:05:26 +0000] "GET /api/v1/orders HTTP/1.1" 502 157 "-" "python-requests/2.31"
+10.0.1.55 - - [12/Aug/2026:14:05:31 +0000] "GET /api/v1/orders HTTP/1.1" 502 157 "-" "python-requests/2.31"
+W0812 14:05:41.443210       1 prober.go:107] Readiness probe failed: HTTP probe failed with statuscode: 503, pod: payments-api-6d8f9c7b4-p9wzr
+E0812 14:05:52.008112       1 pod_workers.go:190] Error syncing pod payments-api-6d8f9c7b4-x2lqk, requeuing: readiness probe failing, endpoint removed from service
+2026-08-12 14:05:58,914 ERROR [db-pool] connection pool exhausted: 32/32 connections in use, 203 requests waiting
+10.0.1.21 - - [12/Aug/2026:14:06:03 +0000] "GET /api/v1/orders HTTP/1.1" 502 157 "-" "python-requests/2.31"
+10.0.1.90 - - [12/Aug/2026:14:06:09 +0000] "GET /api/v1/balance HTTP/1.1" 502 157 "-" "okhttp/4.12.0"
+2026/08/12 14:06:14 [error] 412#412: *90342 no live upstreams while connecting to upstream, client: 10.0.1.87, server: api.internal, request: "GET /api/v1/orders/8811 HTTP/1.1", upstream: "http://payments-api/api/v1/orders/8811"
+10.0.1.87 - - [12/Aug/2026:14:06:16 +0000] "GET /api/v1/orders/8811 HTTP/1.1" 502 157 "-" "Mozilla/5.0"
+10.0.1.34 - - [12/Aug/2026:14:06:24 +0000] "POST /api/v1/payments HTTP/1.1" 502 157 "-" "okhttp/4.12.0"
+2026-08-12 14:06:38,101 ERROR [payments-api] Database query aborted: connection to server at "db-primary.internal" (10.0.4.12), port 5432 failed: timeout expired
+10.0.1.55 - - [12/Aug/2026:14:06:47 +0000] "GET /api/v1/orders HTTP/1.1" 502 157 "-" "python-requests/2.31"
+E0812 14:06:55.771043       1 pod_workers.go:190] Error syncing pod payments-api-6d8f9c7b4-p9wzr, requeuing: readiness probe failing, endpoint removed from service
+10.0.1.90 - - [12/Aug/2026:14:07:02 +0000] "GET /api/v1/balance HTTP/1.1" 502 157 "-" "okhttp/4.12.0"
+2026-08-12 14:07:15,509 WARNING [db-pool] Connection acquisition latency recovering: wait_p95=1900ms
+10.0.1.21 - - [12/Aug/2026:14:07:21 +0000] "GET /api/v1/orders HTTP/1.1" 502 157 "-" "python-requests/2.31"
+2026-08-12 14:07:48,300 INFO [db-pool] Connection to db-primary.internal:5432 re-established, connect_latency=9ms
+2026-08-12 14:07:52,101 INFO [db-pool] Connection pool stats: in_use=6/32 idle=26 wait_p95=14ms
+I0812 14:07:59.104481       1 prober.go:121] Readiness probe succeeded, pod: payments-api-6d8f9c7b4-x2lqk, endpoint restored
+10.0.1.21 - - [12/Aug/2026:14:08:05 +0000] "GET /api/v1/orders HTTP/1.1" 200 1795 "-" "python-requests/2.31"
+10.0.1.34 - - [12/Aug/2026:14:08:19 +0000] "POST /api/v1/payments HTTP/1.1" 201 409 "-" "okhttp/4.12.0"
+2026-08-12 14:09:00,010 INFO [payments-api] Error rate returned to baseline: 0.1% over last 60s

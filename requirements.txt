@@ -1,0 +1,7 @@
+# Runtime dependencies: NONE.
+# The analyzer intentionally uses only the Python 3.10+ standard library
+# (re, datetime, dataclasses, argparse, pathlib, collections, json)
+# so it can run in restricted production environments.
+
+# Development / testing:
+pytest>=8.0
